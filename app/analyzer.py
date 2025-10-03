@@ -137,9 +137,11 @@ class NASAWeatherAnalyzer:
             temps_f = temps_c * 9 / 5 + 32
             stats['temperature'] = {
                 'avg_celsius': round(temps_c.mean(), 1),
-                # 'avg_fahrenheit': round(temps_f.mean(), 1),
                 'min_celsius': round(temps_c.min(), 1),
                 'max_celsius': round(temps_c.max(), 1),
+                #"avg_fahrenheit": round(temps_f.mean(), 1),
+                #"min_fahrenheit": round(temps_f.min(), 1),
+                #"max_fahrenheit": round(temps_f.max(), 1),
                 'std_celsius': round(temps_c.std(), 1),
                 'very_hot_prob': round(((temps_c > 32).sum() / len(temps_c)) * 100, 1),
                 'very_cold_prob': round(((temps_c < 0).sum() / len(temps_c)) * 100, 1)
@@ -192,6 +194,7 @@ class NASAWeatherAnalyzer:
         # Calculate "very uncomfortable" conditions
         # (High temp + high specific humidity OR extreme cold)
         if 'T2M' in df.columns and 'QV2M' in df.columns:
+            temps_c = historical_for_date['T2M'].dropna()
             temps_f = historical_for_date['T2M'] * 9 / 5 + 32
             spec_humidity = historical_for_date['QV2M']
 
@@ -222,8 +225,8 @@ class NASAWeatherAnalyzer:
         if 'temperature' in stats:
             temp = stats['temperature']
             report.append("\n📊 TEMPERATURE:")
-            report.append(f"  • Average: {temp['avg_fahrenheit']}°F ({temp['avg_celsius']}°C)")
-            report.append(f"  • Historical Range: {temp['min_fahrenheit']}°F to {temp['max_fahrenheit']}°F")
+            #report.append(f"  • Average: {temp['avg_fahrenheit']}°F ({temp['avg_celsius']}°C)")
+            report.append(f"  • Historical Range: {temp['min_celsius']}°C to {temp['max_celsius']}°C")
             report.append(f"  • Probability of VERY HOT (>90°F): {temp['very_hot_prob']}%")
             report.append(f"  • Probability of VERY COLD (<32°F): {temp['very_cold_prob']}%")
 
