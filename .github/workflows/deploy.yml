@@ -16,4 +16,4 @@ jobs:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          script: bash ~/scripts/deploy-skyra.sh
+          script: sudo ~/scripts/deploy-skyra.sh
