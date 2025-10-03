@@ -31,3 +31,20 @@ async def analyze_weather(request: WeatherRequest, export: str = Query("none", e
 
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
+
+@app.post("/interact")
+async def interact_with_llm(request: WeatherRequest, activity: str = None):
+    try:
+        from app.llm import interact_llm
+        # Instead of calling the endpoint, call analyzer directly
+        raw_data = analyzer.fetch_historical_data(request.latitude, request.longitude)
+        df = analyzer.process_historical_data(raw_data)
+        stats = analyzer.analyze_future_date(df, request.future_date)
+
+        # Pass stats to LLM
+        llm_response = interact_llm(activity, stats)
+
+        return PlainTextResponse(content=llm_response, media_type="text/plain")
+
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
