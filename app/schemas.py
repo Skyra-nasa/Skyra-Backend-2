@@ -8,7 +8,6 @@ class WeatherRequest(BaseModel):
     longitude: float = Field(..., ge=-180, le=180)
     future_date: date
     activity: str | None
-    Fuck: str | None
 
 class ExportResponse(BaseModel):
     filename: str
