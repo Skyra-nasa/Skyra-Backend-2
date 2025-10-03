@@ -1,3 +1,4 @@
+# .github/workflows/deploy.yml
 name: Deploy to VPS
 
 on:
@@ -8,29 +9,11 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Deploy to VPS
+      - name: Run deployment script on VPS
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          script: |
-            # Navigate to the project directory
-            cd /home/moha/Skyra-Backend
-
-            # Pull the latest changes from the 'dev' branch
-            git pull origin dev
-
-            # Activate the virtual environment
-            source venv/bin/activate
-
-            # Install/update dependencies
-            pip install -r requirements.txt
-
-            # Restart the systemd service
-            sudo systemctl restart skyra
+          script: bash ~/scripts/deploy-skyra.sh
