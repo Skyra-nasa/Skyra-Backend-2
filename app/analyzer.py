@@ -3,6 +3,8 @@ import pandas as pd
 import numpy as np
 from datetime import datetime
 import json
+def f_to_c(fahrenheit: float) -> float:
+    return (fahrenheit - 32) * 5.0 / 9.0
 
 class NASAWeatherAnalyzer:
     def __init__(self):
@@ -135,12 +137,12 @@ class NASAWeatherAnalyzer:
             temps_f = temps_c * 9 / 5 + 32
             stats['temperature'] = {
                 'avg_celsius': round(temps_c.mean(), 1),
-                'avg_fahrenheit': round(temps_f.mean(), 1),
-                'min_fahrenheit': round(temps_f.min(), 1),
-                'max_fahrenheit': round(temps_f.max(), 1),
-                'std_fahrenheit': round(temps_f.std(), 1),
-                'very_hot_prob': round((temps_f > 90).sum() / len(temps_f) * 100, 1),
-                'very_cold_prob': round((temps_f < 32).sum() / len(temps_f) * 100, 1),
+                # 'avg_fahrenheit': round(temps_f.mean(), 1),
+                'min_celsius': round(temps_c.min(), 1),
+                'max_celsius': round(temps_c.max(), 1),
+                'std_celsius': round(temps_c.std(), 1),
+                'very_hot_prob': round(((temps_c > 32).sum() / len(temps_c)) * 100, 1),
+                'very_cold_prob': round(((temps_c < 0).sum() / len(temps_c)) * 100, 1)
             }
 
         # Rain / Precipitation
