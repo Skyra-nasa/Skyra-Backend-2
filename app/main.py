@@ -35,6 +35,5 @@ async def analyze_weather(request: WeatherRequest, export: str = Query("none", e
             report = analyzer.generate_report(request.latitude, request.longitude, request.future_date, stats)
             final_report = f"{report}\n\n🤖 Activity Recommendation:\n{summary_message}"
             return PlainTextResponse(content=final_report, media_type="text/plain")
-    # Exception handling
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
