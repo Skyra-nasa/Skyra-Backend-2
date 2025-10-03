@@ -1,7 +1,10 @@
+import uuid
+
 from fastapi import FastAPI, HTTPException, Query
 from app.analyzer import NASAWeatherAnalyzer
+from app.chatbot import chatbot_llm
 from app.llm import interact_llm
-from app.schemas import WeatherRequest
+from app.schemas import WeatherRequest, ChatRequest
 from fastapi.responses import JSONResponse, PlainTextResponse
 
 app = FastAPI(title="NASA Weather Probability API")
@@ -9,7 +12,7 @@ app = FastAPI(title="NASA Weather Probability API")
 analyzer = NASAWeatherAnalyzer()
 
 @app.post("/analyze")
-async def analyze_weather(request: WeatherRequest, export: str = Query("none", enum=["none", "json", "csv"])):
+async def analyze_weather(request: WeatherRequest, export: str = Query("json", enum=["json", "csv", "none"])):
     try:
         # Fetch historical data
         raw_data = analyzer.fetch_historical_data(request.latitude, request.longitude)
@@ -37,3 +40,39 @@ async def analyze_weather(request: WeatherRequest, export: str = Query("none", e
             return PlainTextResponse(content=final_report, media_type="text/plain")
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
+#---------------------------------------------------------------------------------------------------------------------------------
+
+SESSIONS = {}
+def get_or_create_session(session_id: str = None):
+    if not session_id or session_id not in SESSIONS:
+        session_id = str(uuid.uuid4())
+        SESSIONS[session_id] = []
+    return session_id
+
+def add_to_history(session_id: str, user_message: str, bot_reply: str):
+    SESSIONS[session_id].append(f"User: {user_message}")
+    SESSIONS[session_id].append(f"Bot: {bot_reply}")
+    return SESSIONS[session_id]
+
+@app.post("/chat")
+async def chat_with_bot(request: ChatRequest):
+    session_id = get_or_create_session(request.session_id)
+
+    history_text = "\n".join(SESSIONS[session_id])
+
+    bot_reply = chatbot_llm(
+        activity=request.activity,
+        weather_values=request.weather_values,
+        history=history_text,
+        user_message=request.user_message
+    )
+
+    # تحديث المحادثة
+    add_to_history(session_id, request.user_message, bot_reply)
+
+    return JSONResponse(content={
+        "session_id": session_id,
+        "user_message": request.user_message,
+        "bot_reply": bot_reply,
+        "history": SESSIONS[session_id]
+    })
