@@ -39,6 +39,7 @@ Your tasks:
         # Generate content
         response = model.generate_content(initial_prompt)
 
+
         if not response or not hasattr(response, 'text'):
             raise ValueError("Invalid response from GenAI API")
         return response.text
