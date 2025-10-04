@@ -27,7 +27,6 @@ class NASAWeatherAnalyzer:
         return output
 
     def export_to_csv(self, latitude, longitude, future_date, stats):
-        # نفس اللي عندك
         import io
         rows = []
         rows.append(['Metric', 'Value', 'Unit'])
@@ -35,7 +34,6 @@ class NASAWeatherAnalyzer:
         rows.append(['Longitude', longitude, 'degrees'])
         rows.append(['Target Date', future_date, ''])
         rows.append(['Sample Size', stats['sample_size'], 'observations'])
-        # باقي القيم زي ما هي
         df = pd.DataFrame(rows)
         buffer = io.StringIO()
         df.to_csv(buffer, index=False, header=False)
