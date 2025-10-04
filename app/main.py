@@ -13,6 +13,9 @@ app = FastAPI(title="NASA Weather Probability API")
 analyzer = NASAWeatherAnalyzer()
 origins = [
     "https://skyra-iota.vercel.app",  # frontend dev server
+    "http://localhost:3000",          # Common React/Next/Vite default port
+    "http://localhost:8000",          # Common FastAPI/local development port
+    "http://localhost:5173",
 ]
 app.add_middleware(
     CORSMiddleware,
