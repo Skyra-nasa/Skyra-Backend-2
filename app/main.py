@@ -12,7 +12,7 @@ app = FastAPI(title="NASA Weather Probability API")
 
 analyzer = NASAWeatherAnalyzer()
 origins = [
-    "https://skyra-iota.vercel.app/",  # frontend dev server
+    "https://skyra-iota.vercel.app",  # frontend dev server
 ]
 app.add_middleware(
     CORSMiddleware,
