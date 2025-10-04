@@ -67,7 +67,6 @@ async def chat_with_bot(request: ChatRequest):
         user_message=request.user_message
     )
 
-    # تحديث المحادثة
     add_to_history(session_id, request.user_message, bot_reply)
 
     return JSONResponse(content={
