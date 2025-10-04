@@ -1,5 +1,6 @@
 import uuid
 
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi import FastAPI, HTTPException, Query
 from app.analyzer import NASAWeatherAnalyzer
 from app.chatbot import chatbot_llm
@@ -10,7 +11,16 @@ from fastapi.responses import JSONResponse, PlainTextResponse
 app = FastAPI(title="NASA Weather Probability API")
 
 analyzer = NASAWeatherAnalyzer()
-
+origins = [
+    "http://localhost:5173",  # frontend dev server
+]
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,       # origins that are allowed
+    allow_credentials=True,
+    allow_methods=["*"],         # allow all HTTP methods (GET, POST, etc.)
+    allow_headers=["*"],         # allow all headers
+)
 @app.post("/analyze")
 async def analyze_weather(request: WeatherRequest, export: str = Query("json", enum=["json", "csv", "none"])):
     try:
