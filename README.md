@@ -13,7 +13,6 @@ to determine whether the conditions are suitable — and if not, it suggests sma
 - ✅ **Smart Weather Evaluation** – Checks if an activity (e.g., hiking, diving, cycling) is suitable based on temperature, precipitation, wind speed, and more.  
 - 🔄 **AI-Powered Recommendations** – Suggests alternative activities when the weather is unfavorable.  
 - 🌍 **Location & Time Awareness** – Supports user-specified coordinates and date/time.  
-- 🧩 **Modular & Extensible Design** – Easy to expand with new activities, AI prompts, or data sources.  
 - 🤖 **LLM Integration** – Generates natural language weather summaries and activity suggestions.
 ---
 
