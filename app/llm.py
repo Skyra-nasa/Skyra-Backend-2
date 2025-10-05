@@ -71,7 +71,7 @@ Overall, it’s a comfortable and partly cloudy day with good air stability — 
 
     try:
         # Create the model
-        model = genai.GenerativeModel("gemini-2.5-flash")
+        model = genai.GenerativeModel("gemini-2.5-flash-lite")
 
         # Generate content
         response = model.generate_content(professional_prompt)
