@@ -41,7 +41,7 @@ Skyra-Backend/
 ```bash
 Clone the repository
 git clone https://github.com/Skyra-nasa/Skyra-Backend-2.git
-cd Skyra-Backend
+cd Skyra-Backend-2
 ```
 ## Create and activate a virtual environment
 ```
